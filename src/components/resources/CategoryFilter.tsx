@@ -27,8 +27,8 @@ export const CategoryFilter = ({ selectedCategory, onCategoryChange }: CategoryF
             size="sm"
             onClick={() => onCategoryChange(category.value)}
             className={cn(
-              "border-white/20 hover:bg-primary/10 transition-all",
-              selectedCategory === category.value && "bg-primary/20 border-primary/50"
+              "border-gray-200 hover:bg-gray-50 transition-all",
+              selectedCategory === category.value && "bg-primary text-white border-primary hover:bg-primary-hover"
             )}
           >
             {Icon && <Icon className="w-4 h-4 mr-2" />}

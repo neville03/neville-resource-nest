@@ -4,7 +4,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ResourceCard } from "@/components/resources/ResourceCard";
 import { CategoryFilter } from "@/components/resources/CategoryFilter";
-import { FloatingShapes } from "@/components/home/FloatingShapes";
 import { ArrowLeft, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -68,8 +67,7 @@ const Resources = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
-      <FloatingShapes />
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="relative pt-24 px-4 pb-12">
@@ -80,7 +78,7 @@ const Resources = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="hover:bg-primary/10"
+                className="hover:bg-gray-100 text-gray-600"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Home
@@ -90,28 +88,27 @@ const Resources = () => {
 
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                {courseLabels[course || ""] || "Course"} - Year {year}
-              </span>
+            <h1 className="text-4xl font-bold font-heading mb-2">
+              <span className="text-gray-800">{courseLabels[course || ""] || "Course"}</span>
+              <span className="text-primary"> - Year {year}</span>
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Browse and download academic resources for your course
             </p>
           </div>
 
           {/* Filters and Search */}
-          <div className="glass-card p-6 rounded-xl border border-white/10 mb-8">
+          <div className="bg-white p-6 rounded-xl shadow-soft mb-8">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     type="text"
                     placeholder="Search resources..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-muted/50 border-white/20"
+                    className="pl-10 bg-white border-gray-200"
                   />
                 </div>
               </div>
@@ -130,8 +127,8 @@ const Resources = () => {
           </div>
 
           {filteredResources.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No resources found matching your criteria.</p>
+            <div className="text-center py-12 bg-white rounded-xl shadow-soft">
+              <p className="text-gray-500">No resources found matching your criteria.</p>
             </div>
           )}
         </div>

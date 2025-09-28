@@ -20,25 +20,25 @@ const categoryConfig = {
     icon: FileText,
     color: "text-primary",
     bgColor: "bg-primary/10",
-    borderColor: "border-primary/30",
+    borderColor: "border-primary/20",
   },
   notes: {
     icon: StickyNote,
-    color: "text-secondary",
-    bgColor: "bg-secondary/10",
-    borderColor: "border-secondary/30",
+    color: "text-accent",
+    bgColor: "bg-accent/10",
+    borderColor: "border-accent/20",
   },
   slides: {
     icon: Presentation,
-    color: "text-accent",
-    bgColor: "bg-accent/10",
-    borderColor: "border-accent/30",
+    color: "text-blue-600",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-200",
   },
   books: {
     icon: BookOpen,
-    color: "text-primary-glow",
-    bgColor: "bg-primary-glow/10",
-    borderColor: "border-primary-glow/30",
+    color: "text-purple-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-200",
   },
 };
 
@@ -68,9 +68,9 @@ export const ResourceCard = ({
   return (
     <div
       className={cn(
-        "glass-card p-6 rounded-xl border transition-all duration-300 transform",
-        config.borderColor,
-        isHovered && "scale-105 shadow-2xl border-primary/50"
+        "bg-white p-6 rounded-xl border border-gray-200 transition-all duration-300",
+        "hover-lift hover:shadow-soft-lg",
+        isHovered && "border-primary/30"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -81,12 +81,12 @@ export const ResourceCard = ({
         </div>
         
         <div className="flex-1 space-y-2">
-          <h3 className="font-semibold text-lg">{title}</h3>
+          <h3 className="font-semibold text-lg text-gray-800">{title}</h3>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-gray-600">{description}</p>
           )}
           
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-4 text-xs text-gray-500">
             {year && <span>Year: {year}</span>}
             {semester && <span>Semester: {semester}</span>}
             {size && <span>{size}</span>}
@@ -100,8 +100,8 @@ export const ResourceCard = ({
           variant="outline"
           size="sm"
           className={cn(
-            "border-white/20 hover:bg-primary/10 transition-all",
-            isHovered && "border-primary/50"
+            "border-gray-200 hover:bg-gray-50 transition-all",
+            isHovered && "border-primary/30 text-primary"
           )}
         >
           {type === "link" ? (

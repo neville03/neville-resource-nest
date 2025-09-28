@@ -37,23 +37,23 @@ export const CourseSelector = () => {
   };
 
   return (
-    <div className="glass-card p-8 rounded-2xl backdrop-blur-xl border border-white/20 shadow-2xl">
+    <div className="bg-white p-8 rounded-xl shadow-soft hover-lift">
       <div className="flex items-center gap-3 mb-6">
         <BookOpen className="w-6 h-6 text-primary" />
-        <h2 className="text-2xl font-semibold">Select Your Course</h2>
+        <h2 className="text-2xl font-semibold font-heading text-gray-800">Select Your Course</h2>
       </div>
       
       <div className="space-y-4">
         <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-          <SelectTrigger className="w-full h-12 bg-muted/50 border-white/20 hover:border-primary/50 transition-colors">
+          <SelectTrigger className="w-full h-12 bg-white border-gray-200 hover:border-primary transition-colors">
             <SelectValue placeholder="Choose your course" />
           </SelectTrigger>
-          <SelectContent className="bg-card/95 backdrop-blur-xl border-white/20">
+          <SelectContent className="bg-white border-gray-200 animate-slide-down">
             {courses.map((course) => (
               <SelectItem 
                 key={course.value} 
                 value={course.value}
-                className="hover:bg-primary/10 focus:bg-primary/20"
+                className="hover:bg-gray-50 focus:bg-primary/5"
               >
                 {course.label}
               </SelectItem>
@@ -62,15 +62,15 @@ export const CourseSelector = () => {
         </Select>
 
         <Select value={selectedYear} onValueChange={setSelectedYear}>
-          <SelectTrigger className="w-full h-12 bg-muted/50 border-white/20 hover:border-primary/50 transition-colors">
+          <SelectTrigger className="w-full h-12 bg-white border-gray-200 hover:border-primary transition-colors">
             <SelectValue placeholder="Select your year" />
           </SelectTrigger>
-          <SelectContent className="bg-card/95 backdrop-blur-xl border-white/20">
+          <SelectContent className="bg-white border-gray-200 animate-slide-down">
             {years.map((year) => (
               <SelectItem 
                 key={year.value} 
                 value={year.value}
-                className="hover:bg-primary/10 focus:bg-primary/20"
+                className="hover:bg-gray-50 focus:bg-primary/5"
               >
                 {year.label}
               </SelectItem>
@@ -81,9 +81,9 @@ export const CourseSelector = () => {
         <Button
           onClick={handleNavigate}
           disabled={!selectedCourse || !selectedYear}
-          className="w-full h-12 bg-gradient-primary hover:opacity-90 transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:transform-none"
+          className="w-full h-12 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span className="font-semibold">Access Resources</span>
+          <span>Access Resources</span>
           <ChevronRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
