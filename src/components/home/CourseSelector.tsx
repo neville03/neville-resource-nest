@@ -53,7 +53,7 @@ export const CourseSelector = () => {
               <SelectItem 
                 key={course.value} 
                 value={course.value}
-                className="hover:bg-primary/5 focus:bg-primary/10"
+                className="font-semibold text-foreground hover:bg-primary/5 focus:bg-primary/10 data-[highlighted]:bg-primary/5 data-[highlighted]:text-foreground"
               >
                 {course.label}
               </SelectItem>
@@ -70,7 +70,7 @@ export const CourseSelector = () => {
               <SelectItem 
                 key={year.value} 
                 value={year.value}
-                className="hover:bg-primary/5 focus:bg-primary/10"
+                className="font-semibold text-foreground hover:bg-primary/5 focus:bg-primary/10 data-[highlighted]:bg-primary/5 data-[highlighted]:text-foreground"
               >
                 {year.label}
               </SelectItem>
