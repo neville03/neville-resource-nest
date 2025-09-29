@@ -53,7 +53,7 @@ export const CourseSelector = () => {
               <SelectItem 
                 key={course.value} 
                 value={course.value}
-                className="hover:bg-gray-50 focus:bg-primary/5"
+                className="hover:bg-primary/5 focus:bg-primary/10"
               >
                 {course.label}
               </SelectItem>
@@ -70,7 +70,7 @@ export const CourseSelector = () => {
               <SelectItem 
                 key={year.value} 
                 value={year.value}
-                className="hover:bg-gray-50 focus:bg-primary/5"
+                className="hover:bg-primary/5 focus:bg-primary/10"
               >
                 {year.label}
               </SelectItem>
