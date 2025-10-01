@@ -124,15 +124,9 @@ const Resources = () => {
 
   const courseLabels: Record<string, string> = {
     cs: "Computer Science",
-    it: "Information Technology",
+    it: "Information Systems and Technology",
     se: "Software Engineering",
-    ds: "Data Science",
-    ee: "Electrical Engineering",
-    me: "Mechanical Engineering",
-    math: "Mathematics",
-    physics: "Physics",
-    eng: "Engineering",
-    bio: "Biology",
+    blis: "Library and Information Science"
   };
 
   return (
