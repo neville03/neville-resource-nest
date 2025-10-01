@@ -13,6 +13,7 @@ interface ResourceCardProps {
   size?: string;
   year?: string;
   semester?: string;
+  onDownload?: () => void;
 }
 
 const categoryConfig = {
@@ -50,14 +51,17 @@ export const ResourceCard = ({
   url, 
   size, 
   year,
-  semester 
+  semester,
+  onDownload 
 }: ResourceCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const config = categoryConfig[category];
   const Icon = config.icon;
 
   const handleAction = () => {
-    if (type === "link" && url) {
+    if (onDownload) {
+      onDownload();
+    } else if (type === "link" && url) {
       window.open(url, "_blank", "noopener,noreferrer");
     } else if (type === "file") {
       // File download would be handled here with backend integration

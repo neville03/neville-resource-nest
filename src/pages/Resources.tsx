@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,64 +7,104 @@ import { CategoryFilter } from "@/components/resources/CategoryFilter";
 import { ArrowLeft, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-// Mock data - would be fetched from backend
-const mockResources = [
-  {
-    id: "1",
-    title: "Data Structures Final Exam 2023",
-    description: "Complete past paper with solutions",
-    category: "past-papers" as const,
-    type: "file" as const,
-    size: "2.4 MB",
-    year: "2023",
-    semester: "Fall",
-  },
-  {
-    id: "2",
-    title: "Algorithm Design Notes",
-    description: "Comprehensive study notes covering all topics",
-    category: "notes" as const,
-    type: "file" as const,
-    size: "5.1 MB",
-  },
-  {
-    id: "3",
-    title: "Introduction to Algorithms - MIT",
-    description: "Free online textbook",
-    category: "books" as const,
-    type: "link" as const,
-    url: "https://mitpress.mit.edu/books/introduction-algorithms",
-  },
-  {
-    id: "4",
-    title: "Week 1-4 Lecture Slides",
-    description: "Professor's presentation slides",
-    category: "slides" as const,
-    type: "file" as const,
-    size: "12.3 MB",
-  },
-];
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Resources = () => {
   const { course, year } = useParams();
+  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [resources, setResources] = useState<any[]>([]);
+  const [courseInfo, setCourseInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const filteredResources = mockResources.filter((resource) => {
-    const matchesCategory = selectedCategory === "all" || resource.category === selectedCategory;
+  useEffect(() => {
+    fetchResources();
+  }, [course, year]);
+
+  const fetchResources = async () => {
+    if (!course || !year) return;
+    
+    try {
+      setLoading(true);
+      
+      // Fetch resources for this course and year
+      const { data: resourcesData, error: resourcesError } = await supabase
+        .from('resources')
+        .select('*')
+        .eq('course_code', course)
+        .eq('year', parseInt(year))
+        .order('created_at', { ascending: false });
+
+      if (resourcesError) {
+        console.error('Error fetching resources:', resourcesError);
+        toast({
+          title: "Error",
+          description: "Failed to load resources",
+          variant: "destructive"
+        });
+      }
+
+      // Fetch course info
+      const { data: courseData } = await supabase
+        .from('courses')
+        .select('*')
+        .eq('code', course)
+        .single();
+
+      if (resourcesData) setResources(resourcesData);
+      if (courseData) setCourseInfo(courseData);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownload = async (resource: any) => {
+    try {
+      // Track download
+      const { error } = await supabase
+        .from('resources')
+        .update({ download_count: (resource.download_count || 0) + 1 })
+        .eq('id', resource.id);
+
+      if (error) {
+        console.error('Error tracking download:', error);
+      }
+
+      // Track analytics
+      await supabase
+        .from('resource_analytics')
+        .insert({
+          resource_id: resource.id,
+          event_type: 'download'
+        });
+
+      // Open file or link
+      if (resource.file_url) {
+        window.open(resource.file_url, '_blank');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+    }
+  };
+
+  const filteredResources = resources.filter((resource) => {
+    const categoryMap: Record<string, string> = {
+      'past_papers': 'past-papers',
+      'notes': 'notes',
+      'slides': 'slides',
+      'book_links': 'books'
+    };
+    
+    const resourceCategory = categoryMap[resource.category] || resource.category;
+    const matchesCategory = selectedCategory === "all" || resourceCategory === selectedCategory;
     const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           resource.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
-
-  const courseLabels: Record<string, string> = {
-    cs: "Computer Science",
-    math: "Mathematics",
-    physics: "Physics",
-    eng: "Engineering",
-    bio: "Biology",
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -89,7 +129,7 @@ const Resources = () => {
           {/* Page Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold font-heading mb-2">
-              <span className="text-gray-800">{courseLabels[course || ""] || "Course"}</span>
+              <span className="text-gray-800">{courseInfo?.name || course?.toUpperCase()}</span>
               <span className="text-primary"> - Year {year}</span>
             </h1>
             <p className="text-gray-600">
@@ -120,16 +160,44 @@ const Resources = () => {
           </div>
 
           {/* Resources Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredResources.map((resource) => (
-              <ResourceCard key={resource.id} {...resource} />
-            ))}
-          </div>
-
-          {filteredResources.length === 0 && (
+          {loading ? (
             <div className="text-center py-12 bg-white rounded-xl shadow-soft">
-              <p className="text-gray-500">No resources found matching your criteria.</p>
+              <p className="text-gray-500">Loading resources...</p>
             </div>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredResources.map((resource) => {
+                  const categoryMap: Record<string, string> = {
+                    'past_papers': 'past-papers',
+                    'notes': 'notes',
+                    'slides': 'slides',
+                    'book_links': 'books'
+                  };
+                  
+                  return (
+                    <ResourceCard 
+                      key={resource.id} 
+                      id={resource.id}
+                      title={resource.title}
+                      description={resource.description}
+                      category={categoryMap[resource.category] || resource.category}
+                      type={resource.file_type === 'external_link' ? 'link' : 'file'}
+                      size={resource.file_size ? `${(resource.file_size / 1024 / 1024).toFixed(1)} MB` : undefined}
+                      url={resource.file_url}
+                      year={resource.year?.toString()}
+                      onDownload={() => handleDownload(resource)}
+                    />
+                  );
+                })}
+              </div>
+
+              {filteredResources.length === 0 && (
+                <div className="text-center py-12 bg-white rounded-xl shadow-soft">
+                  <p className="text-gray-500">No resources found matching your criteria.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>

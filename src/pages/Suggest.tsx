@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -15,11 +15,13 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft, Send, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Suggest = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [courses, setCourses] = useState<any[]>([]);
   
   const [formData, setFormData] = useState({
     resourceTitle: "",
@@ -32,19 +34,72 @@ const Suggest = () => {
     studentEmail: "",
   });
 
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    const { data } = await supabase
+      .from('courses')
+      .select('*')
+      .order('name');
+    
+    if (data) setCourses(data);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.resourceTitle || !formData.resourceType || !formData.course) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
-    // This would send to backend
-    setTimeout(() => {
+    try {
+      // Map resource types to categories
+      const categoryMap: Record<string, string> = {
+        'past-paper': 'past_papers',
+        'notes': 'notes',
+        'slides': 'slides',
+        'book': 'book_links'
+      };
+
+      const suggestionData: any = {
+        title: formData.resourceTitle,
+        category: (categoryMap[formData.resourceType] || 'notes') as any,
+        course_code: formData.course,
+        year: formData.year ? parseInt(formData.year) : null,
+        description: formData.description || formData.resourceTitle,
+      };
+
+      const { error } = await supabase
+        .from('suggestions')
+        .insert([suggestionData]);
+
+      if (error) throw error;
+
       toast({
-        title: "Suggestion submitted!",
-        description: "Thank you for helping improve our resource library.",
+        title: "Suggestion submitted! 🎉",
+        description: "Thank you for helping improve our resource library. We'll review it soon!",
       });
-      setIsSubmitting(false);
+      
       navigate("/");
-    }, 1000);
+    } catch (error: any) {
+      console.error('Submit error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit suggestion",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -130,11 +185,11 @@ const Suggest = () => {
                         <SelectValue placeholder="Select course" />
                       </SelectTrigger>
                       <SelectContent className="bg-white border-gray-200">
-                        <SelectItem value="cs">Computer Science</SelectItem>
-                        <SelectItem value="math">Mathematics</SelectItem>
-                        <SelectItem value="physics">Physics</SelectItem>
-                        <SelectItem value="eng">Engineering</SelectItem>
-                        <SelectItem value="bio">Biology</SelectItem>
+                        {courses.map(course => (
+                          <SelectItem key={course.id} value={course.code}>
+                            {course.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
