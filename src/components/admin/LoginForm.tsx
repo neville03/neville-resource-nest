@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, Lock } from "lucide-react";
+import { Shield, Lock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,25 +18,42 @@ export const LoginForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // This would be replaced with actual authentication
-    // For now, using a simple password check
-    if (password === "CS2024Admin") {
+    try {
+      // Sign in with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) throw authError;
+
+      // Check if user has admin role
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', authData.user.id)
+        .eq('role', 'admin')
+        .single();
+
+      if (roleError || !roleData) {
+        await supabase.auth.signOut();
+        throw new Error('Access denied. Admin privileges required.');
+      }
+
       toast({
         title: "Login successful",
         description: "Welcome to the admin panel",
       });
-      // Store auth state (would use proper auth with backend)
-      sessionStorage.setItem("adminAuth", "true");
-      navigate("/admin-neville-2024");
-    } else {
+      navigate("/admin/dashboard");
+    } catch (error: any) {
       toast({
         title: "Login failed",
-        description: "Invalid password",
+        description: error.message || "Invalid credentials",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
@@ -56,6 +75,24 @@ export const LoginForm = () => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
+              <Label htmlFor="email" className="text-admin-foreground">
+                Email
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-admin-foreground/40" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 bg-admin-background border-admin-border text-admin-foreground placeholder:text-admin-foreground/40"
+                  placeholder="admin@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="password" className="text-admin-foreground">
                 Password
               </Label>
@@ -67,7 +104,7 @@ export const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 bg-admin-background border-admin-border text-admin-foreground placeholder:text-admin-foreground/40"
-                  placeholder="Enter admin password"
+                  placeholder="Enter password"
                   required
                 />
               </div>
