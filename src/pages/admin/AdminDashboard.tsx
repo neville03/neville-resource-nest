@@ -134,13 +134,27 @@ const AdminDashboard = () => {
     }
 
     try {
+      // Check authentication
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          title: "Authentication Error",
+          description: "You must be logged in to upload resources",
+          variant: "destructive"
+        });
+        return;
+      }
+
       // Upload file to storage
       const fileName = `${Date.now()}_${uploadFile.name}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('resources')
         .upload(fileName, uploadFile);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Storage upload error:', uploadError);
+        throw new Error(`Storage upload failed: ${uploadError.message}`);
+      }
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
@@ -158,10 +172,14 @@ const AdminDashboard = () => {
           year: parseInt(resourceForm.year),
           file_url: publicUrl,
           file_size: uploadFile.size,
-          file_type: uploadFile.type
+          file_type: uploadFile.type,
+          created_by: session.user.id
         });
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error('Database insert error:', insertError);
+        throw new Error(`Failed to save resource: ${insertError.message}`);
+      }
 
       toast({
         title: "Success! 🎉",

@@ -26,8 +26,10 @@ const App = () => (
           <Route path="/about" element={<About />} />
           
           {/* Hidden Admin Routes - No visible links to these */}
-          <Route path="/admin-neville-2024/login" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin-neville-2024" element={<AdminDashboard />} />
+          <Route path="/admin-neville-2024/login" element={<AdminLogin />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -19,10 +19,7 @@ interface AdminLayoutProps {
 }
 
 const navItems = [
-  { path: "/admin-neville-2024", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/admin-neville-2024/content", label: "Content", icon: FileUp },
-  { path: "/admin-neville-2024/suggestions", label: "Suggestions", icon: MessageSquare },
-  { path: "/admin-neville-2024/links", label: "External Links", icon: Link2 },
+  { path: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
 ];
 
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
