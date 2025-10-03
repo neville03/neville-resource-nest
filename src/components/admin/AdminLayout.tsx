@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { ReactNode, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   LayoutDashboard, 
@@ -7,9 +7,12 @@ import {
   MessageSquare, 
   Link2,
   LogOut,
-  Shield
+  Shield,
+  Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -24,11 +27,72 @@ const navItems = [
 
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleLogout = () => {
-    // Logout functionality would be implemented with backend
-    console.log("Logging out...");
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          navigate('/admin/login');
+          return;
+        }
+
+        // Check if user has admin role
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .single();
+
+        if (!roleData) {
+          toast({
+            title: "Access Denied",
+            description: "You do not have admin privileges",
+            variant: "destructive",
+          });
+          await supabase.auth.signOut();
+          navigate('/admin/login');
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        navigate('/admin/login');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [navigate, toast]);
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully",
+      });
+      navigate("/admin/login");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to log out",
+        variant: "destructive",
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-admin-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-admin-accent" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-admin-background text-admin-foreground">
