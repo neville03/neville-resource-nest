@@ -86,6 +86,7 @@ const About = () => {
                   <span>Built with passion and</span>
                   <Heart className="w-4 h-4 text-primary" />
                   <span>by students, for students</span>
+                  <span>Copyright 2025. All rights reserved.</span>
                 </div>
               </div>
             </div>
