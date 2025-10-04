@@ -9,6 +9,7 @@ import Suggest from "./pages/Suggest";
 import About from "./pages/About";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import SetupAdmin from "./pages/SetupAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           {/* Hidden Admin Routes - No visible links to these */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/setup-admin" element={<SetupAdmin />} />
           <Route path="/admin-neville-2024" element={<AdminDashboard />} />
           <Route path="/admin-neville-2024/login" element={<AdminLogin />} />
           
