@@ -14,6 +14,7 @@ export const Footer = () => {
           <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
             <ExternalLink className="w-3 h-3" />
             <span>External book links lead to legally available educational resources</span>
+            <span>Copyright 2025. All rights reserved.</span>
           </div>
           
           <div className="flex justify-center gap-6 text-sm">
