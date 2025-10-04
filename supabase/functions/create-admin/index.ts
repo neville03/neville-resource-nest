@@ -62,6 +62,16 @@ serve(async (req) => {
         }
 
         userId = existingUser.id;
+        
+        // Update the password for the existing user
+        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+          userId,
+          { password }
+        );
+        
+        if (updateError) {
+          console.error("Error updating password:", updateError);
+        }
       } else {
         console.error("Error creating user:", userError);
         return new Response(
