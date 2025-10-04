@@ -64,6 +64,7 @@ const Index = () => {
               <p className="text-sm text-gray-600">
                 Fresh resources added regularly to keep you ahead of the curve.
               </p>
+              <h1>NEST All rights reserved</h1>
             </div>
           </div>
         </div>

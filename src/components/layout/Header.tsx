@@ -8,7 +8,7 @@ export const Header = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-xl font-bold">
           <GraduationCap className="w-7 h-7 text-primary" />
-          <span className="text-gray-800 font-heading">ResourceHub</span>
+          <span className="text-gray-800 font-heading">NEST</span>
         </Link>
         
         <nav className="flex items-center gap-4">

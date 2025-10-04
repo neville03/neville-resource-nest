@@ -68,11 +68,11 @@ const AdminLogin = () => {
       });
 
       navigate('/admin/dashboard');
-    } catch (error: any) {
-      console.error('Login error:', error);
+    } catch (e) {
+      console.error('Login error:', e);
       toast({
         title: "Login failed",
-        description: error.message || "Invalid credentials or insufficient permissions",
+        description: e.message || "Invalid credentials or insufficient permissions",
         variant: "destructive",
       });
     } finally {
