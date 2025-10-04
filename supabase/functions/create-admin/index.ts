@@ -27,7 +27,9 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Create the user
+    let userId: string;
+
+    // Try to create the user
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -35,10 +37,58 @@ serve(async (req) => {
     });
 
     if (userError) {
-      console.error("Error creating user:", userError);
+      // If user already exists, try to get their ID
+      if (userError.message.includes("already been registered")) {
+        console.log("User already exists, looking up user ID...");
+        
+        // List users and find by email
+        const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+        
+        if (listError) {
+          console.error("Error listing users:", listError);
+          return new Response(
+            JSON.stringify({ error: "User exists but could not verify identity" }),
+            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        const existingUser = users.users.find(u => u.email === email);
+        
+        if (!existingUser) {
+          return new Response(
+            JSON.stringify({ error: "User exists but could not be found" }),
+            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        userId = existingUser.id;
+      } else {
+        console.error("Error creating user:", userError);
+        return new Response(
+          JSON.stringify({ error: userError.message }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } else {
+      userId = userData.user.id;
+    }
+
+    // Check if admin role already exists
+    const { data: existingRole } = await supabaseAdmin
+      .from("user_roles")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (existingRole) {
       return new Response(
-        JSON.stringify({ error: userError.message }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ 
+          success: true,
+          message: "User already has admin role",
+          user: { id: userId, email }
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -46,7 +96,7 @@ serve(async (req) => {
     const { error: roleError } = await supabaseAdmin
       .from("user_roles")
       .insert({
-        user_id: userData.user.id,
+        user_id: userId,
         role: "admin",
       });
 
@@ -62,7 +112,7 @@ serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         message: "Admin user created successfully",
-        user: { id: userData.user.id, email: userData.user.email }
+        user: { id: userId, email }
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
