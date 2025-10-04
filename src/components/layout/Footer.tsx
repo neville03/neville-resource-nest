@@ -9,6 +9,7 @@ export const Footer = () => {
             <span>Created with</span>
             <Heart className="w-4 h-4 text-primary" />
             <span>by Neville Akoragye, CS Year 2</span>
+            <span>Copyright 2025. All rights reserved.</span>
           </div>
           
           <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
