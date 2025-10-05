@@ -28,7 +28,7 @@ const About = () => {
           <div className="bg-white p-8 md:p-12 rounded-xl shadow-soft">
             <h1 className="text-4xl font-bold font-heading mb-8">
               <span className="text-gray-800">About</span>
-              <span className="text-primary"> ResourceHub</span>
+              <span className="text-primary"> Nest</span>
             </h1>
 
             <div className="space-y-8">
@@ -41,7 +41,7 @@ const About = () => {
                   <h2 className="text-2xl font-semibold text-gray-800">Our Mission</h2>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
-                  ResourceHub was created to democratize access to academic resources 
+                  Nest was created to democratize access to academic resources 
                   and foster a collaborative learning environment. We believe that every 
                   student deserves easy access to quality study materials, regardless of 
                   their background or circumstances.
