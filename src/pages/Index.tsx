@@ -17,13 +17,13 @@ const Index = () => {
               <span className="text-sm font-medium text-primary">Your Academic Success Hub</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold font-heading">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
               <span className="text-gray-800">Academic Resources</span>
               <br />
               <span className="text-primary">Made Simple</span>
             </h1>
             
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
               Access past papers, study notes, lecture slides, and recommended books 
               all in one beautifully organized platform.
             </p>
@@ -35,7 +35,7 @@ const Index = () => {
           </div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
             <div className="bg-white p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group">
               <div className="p-3 bg-primary/10 rounded-lg w-fit mb-4 group-hover:bg-primary/20 transition-colors">
                 <Zap className="w-6 h-6 text-primary" />
@@ -56,7 +56,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group">
+            <div className="bg-white p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group sm:col-span-2 md:col-span-1">
               <div className="p-3 bg-blue-50 rounded-lg w-fit mb-4 group-hover:bg-blue-100 transition-colors">
                 <Sparkles className="w-6 h-6 text-blue-600" />
               </div>
@@ -64,7 +64,6 @@ const Index = () => {
               <p className="text-sm text-gray-600">
                 Fresh resources added regularly to keep you ahead of the curve.
               </p>
-              <h1>NEST All rights reserved</h1>
             </div>
           </div>
         </div>

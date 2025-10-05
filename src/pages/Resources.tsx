@@ -128,11 +128,11 @@ const Resources = () => {
 
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold font-heading mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold font-heading mb-2">
               <span className="text-gray-800">{courseInfo?.name || course?.toUpperCase()}</span>
               <span className="text-primary"> - Year {year}</span>
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm sm:text-base">
               Browse and download academic resources for your course
             </p>
           </div>
@@ -166,7 +166,7 @@ const Resources = () => {
             </div>
           ) : (
             <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredResources.map((resource) => {
                   const categoryMap: Record<string, string> = {
                     'past_papers': 'past-papers',

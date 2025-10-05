@@ -371,13 +371,13 @@ const AdminDashboard = () => {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-admin-border">
-          <div className="flex space-x-8">
+        <div className="border-b border-admin-border overflow-x-auto">
+          <div className="flex space-x-4 md:space-x-8 min-w-max">
             {["overview", "upload", "book-links", "resources", "suggestions"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 px-1 border-b-2 transition-colors capitalize ${
+                className={`pb-3 px-2 md:px-1 border-b-2 transition-colors capitalize whitespace-nowrap ${
                   activeTab === tab
                     ? "border-admin-accent text-admin-accent"
                     : "border-transparent text-muted-foreground hover:text-admin-foreground"

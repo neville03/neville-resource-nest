@@ -25,8 +25,8 @@ const About = () => {
           </Button>
 
           {/* About Content */}
-          <div className="bg-white p-8 md:p-12 rounded-xl shadow-soft">
-            <h1 className="text-4xl font-bold font-heading mb-8">
+          <div className="bg-white p-6 sm:p-8 md:p-12 rounded-xl shadow-soft">
+            <h1 className="text-3xl sm:text-4xl font-bold font-heading mb-8">
               <span className="text-gray-800">About</span>
               <span className="text-primary"> Nest</span>
             </h1>
