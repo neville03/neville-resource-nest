@@ -107,7 +107,7 @@ const About = () => {
                           <img 
                             src={nevillePhoto}
                             alt="Neville Akoragye - Founder"
-                            className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white shadow-lg"
+                            className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover object-top border-4 border-white shadow-lg"
                           />
                         </div>
                         
