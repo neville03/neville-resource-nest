@@ -30,8 +30,10 @@ const Index = () => {
           </div>
 
           {/* Course Selector */}
-          <div className="flex justify-center mb-16">
-            <CourseSelector />
+          <div className="flex justify-center mb-16 px-4">
+            <div className="w-full max-w-2xl">
+              <CourseSelector />
+            </div>
           </div>
 
           {/* Features Grid */}
