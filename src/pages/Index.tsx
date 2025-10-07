@@ -2,35 +2,71 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CourseSelector } from "@/components/home/CourseSelector";
 import { Sparkles, Zap, Globe } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import hero1 from "@/assets/hero-1.jpg";
+import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
+import hero4 from "@/assets/hero-4.jpg";
 
 const Index = () => {
+  const heroImages = [hero1, hero2, hero3, hero4];
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
       
-      <main className="relative pt-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          {/* Hero Section */}
-          <div className="text-center mb-12 space-y-6 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Your Academic Success Hub</span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
-              <span className="text-gray-800">Academic Resources</span>
-              <br />
-              <span className="text-primary">Made Simple</span>
-            </h1>
-            
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Access past papers, study notes, lecture slides, and recommended books 
-              all in one beautifully organized platform.
-            </p>
-          </div>
+      <main className="relative">
+        {/* Hero Section with Carousel Background */}
+        <div className="relative h-[600px] overflow-hidden">
+          {/* Background Carousel */}
+          <Carousel
+            opts={{ loop: true }}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
+            className="absolute inset-0 -z-10"
+          >
+            <CarouselContent>
+              {heroImages.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative h-[600px] w-full">
+                    <img
+                      src={image}
+                      alt={`Academic success ${index + 1}`}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
 
+          {/* Hero Content */}
+          <div className="relative z-10 container mx-auto max-w-6xl px-4 h-full flex flex-col justify-center">
+            <div className="max-w-3xl space-y-6 animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-4 border border-white/20">
+                <Sparkles className="w-4 h-4 text-white" />
+                <span className="text-sm font-medium text-white">Your Academic Success Hub</span>
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading text-white leading-tight">
+                Go from 20% to 90% prepared — in minutes.
+              </h1>
+              
+              <p className="text-xl sm:text-2xl text-white/90 font-medium">
+                Smart revision. Instant results.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="container mx-auto max-w-6xl px-4 py-16">
           {/* Course Selector */}
-          <div className="flex justify-center mb-16 px-4">
+          <div className="flex justify-center mb-16">
             <div className="w-full max-w-2xl">
               <CourseSelector />
             </div>
