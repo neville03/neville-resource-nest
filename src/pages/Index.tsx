@@ -18,7 +18,7 @@ const Index = () => {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
-              <span className="text-gray-800">School </span>
+              <span className="text-gray-800">Your studies</span>
               <br />
               <span className="text-primary">Made Simple.</span>
             </h1>
