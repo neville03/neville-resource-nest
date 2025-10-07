@@ -18,9 +18,9 @@ const Index = () => {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
-              <span className="text-gray-800">Go from 20% to 90% prepared</span>
+              <span className="text-gray-800">School </span>
               <br />
-              <span className="text-primary">In minutes.</span>
+              <span className="text-primary">Made Simple.</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
