@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CourseSelector } from "@/components/home/CourseSelector";
 import { Sparkles, Zap, Globe } from "lucide-react";
-import heroImage from "@/assets/hero-image.jpg";
+import heroImage from "@/assets/hero-background.jpg";
 
 const Index = () => {
   return (
@@ -12,29 +12,28 @@ const Index = () => {
       <main className="relative">
         {/* Hero Image Section */}
         <div className="relative h-[600px] overflow-hidden">
-          <img 
-            src={heroImage} 
-            alt="Students studying together in modern library" 
-            className="w-full h-full object-cover"
+          <div 
+            className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105"
+            style={{ backgroundImage: `url(${heroImage})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white"></div>
+          <div className="absolute inset-0 bg-black/30"></div>
           
           {/* Hero Content Overlay */}
           <div className="absolute inset-0 flex items-center justify-center pt-24">
             <div className="container mx-auto max-w-6xl px-4">
               <div className="text-center space-y-6 animate-fade-in">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full mb-4 shadow-lg">
                   <Sparkles className="w-4 h-4 text-primary" />
                   <span className="text-sm font-medium text-primary">Your personalized library</span>
                 </div>
                 
                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
-                  <span className="text-white drop-shadow-lg">Your studies</span>
+                  <span className="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">Your studies</span>
                   <br />
-                  <span className="text-primary drop-shadow-lg">Made Simple.</span>
+                  <span className="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">Made Simple.</span>
                 </h1>
                 
-                <p className="text-lg sm:text-xl text-white drop-shadow-md max-w-2xl mx-auto px-4">
+                <p className="text-lg sm:text-xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] max-w-2xl mx-auto px-4 font-medium">
                   Access past papers, study notes, lecture slides, and recommended books 
                   all in one beautifully organized platform.
                 </p>
