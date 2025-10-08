@@ -2,35 +2,51 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CourseSelector } from "@/components/home/CourseSelector";
 import { Sparkles, Zap, Globe } from "lucide-react";
+import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
       
-      <main className="relative pt-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          {/* Hero Section */}
-          <div className="text-center mb-12 space-y-6 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Your personalized library</span>
+      <main className="relative">
+        {/* Hero Image Section */}
+        <div className="relative h-[600px] overflow-hidden">
+          <img 
+            src={heroImage} 
+            alt="Students studying together in modern library" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white"></div>
+          
+          {/* Hero Content Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center pt-24">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="text-center space-y-6 animate-fade-in">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full mb-4">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-primary">Your personalized library</span>
+                </div>
+                
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
+                  <span className="text-white drop-shadow-lg">Your studies</span>
+                  <br />
+                  <span className="text-primary drop-shadow-lg">Made Simple.</span>
+                </h1>
+                
+                <p className="text-lg sm:text-xl text-white drop-shadow-md max-w-2xl mx-auto px-4">
+                  Access past papers, study notes, lecture slides, and recommended books 
+                  all in one beautifully organized platform.
+                </p>
+              </div>
             </div>
-            
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading">
-              <span className="text-gray-800">Your studies</span>
-              <br />
-              <span className="text-primary">Made Simple.</span>
-            </h1>
-            
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Access past papers, study notes, lecture slides, and recommended books 
-              all in one beautifully organized platform.
-            </p>
           </div>
+        </div>
+
+        <div className="container mx-auto max-w-6xl px-4 -mt-8">
 
           {/* Course Selector */}
-          <div className="flex justify-center mb-16 px-4">
+          <div className="flex justify-center mb-16">
             <div className="w-full max-w-2xl">
               <CourseSelector />
             </div>
