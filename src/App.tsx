@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Resources from "./pages/Resources";
 import Suggest from "./pages/Suggest";
 import About from "./pages/About";
+import Community from "./pages/Community";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import SetupAdmin from "./pages/SetupAdmin";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/resources/:course/:year" element={<Resources />} />
           <Route path="/suggest" element={<Suggest />} />
           <Route path="/about" element={<About />} />
+          <Route path="/community" element={<Community />} />
           
           {/* Hidden Admin Routes - No visible links to these */}
           <Route path="/admin/login" element={<AdminLogin />} />

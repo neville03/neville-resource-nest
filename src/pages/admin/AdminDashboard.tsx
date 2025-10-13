@@ -26,12 +26,14 @@ import {
   XCircle,
   ExternalLink
 } from "lucide-react";
+import { CommunityTab } from "@/components/admin/CommunityTab";
 
 const AdminDashboard = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
   const [resources, setResources] = useState<any[]>([]);
   const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [communityPosts, setCommunityPosts] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
   const [stats, setStats] = useState({
     totalResources: 0,
@@ -87,6 +89,16 @@ const AdminDashboard = () => {
         console.error('Error fetching suggestions:', suggestionsError);
       }
 
+      // Fetch community posts
+      const { data: postsData, error: postsError } = await supabase
+        .from('community_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (postsError) {
+        console.error('Error fetching community posts:', postsError);
+      }
+
       // Fetch courses
       const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
@@ -98,6 +110,7 @@ const AdminDashboard = () => {
       }
 
       if (resourcesData) setResources(resourcesData);
+      if (postsData) setCommunityPosts(postsData);
       if (suggestionsData) setSuggestions(suggestionsData);
       if (coursesData) setCourses(coursesData);
 
@@ -373,7 +386,7 @@ const AdminDashboard = () => {
         {/* Tabs */}
         <div className="border-b border-admin-border overflow-x-auto">
           <div className="flex space-x-4 md:space-x-8 min-w-max">
-            {["overview", "upload", "book-links", "resources", "suggestions"].map((tab) => (
+            {["overview", "upload", "book-links", "resources", "community", "suggestions"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -832,6 +845,11 @@ const AdminDashboard = () => {
               </div>
             )}
           </div>
+        )}
+
+        {/* Community Tab */}
+        {activeTab === "community" && (
+          <CommunityTab posts={communityPosts} onRefresh={fetchData} />
         )}
       </div>
     </AdminLayout>

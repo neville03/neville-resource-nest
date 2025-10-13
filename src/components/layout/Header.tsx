@@ -20,6 +20,9 @@ export const Header = () => {
           <Link to="/about" className="text-gray-600 hover:text-primary transition-colors">
             About
           </Link>
+          <Link to="/community" className="text-gray-600 hover:text-primary transition-colors">
+            Community
+          </Link>
           <Link to="/suggest">
             <Button className="btn-primary flex items-center gap-2">
               <MessageSquarePlus className="w-4 h-4" />
@@ -43,6 +46,13 @@ export const Header = () => {
                 onClick={() => setOpen(false)}
               >
                 About
+              </Link>
+              <Link 
+                to="/community" 
+                className="text-gray-600 hover:text-primary transition-colors py-2"
+                onClick={() => setOpen(false)}
+              >
+                Community
               </Link>
               <Link to="/suggest" onClick={() => setOpen(false)}>
                 <Button className="btn-primary flex items-center gap-2 w-full">

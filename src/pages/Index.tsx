@@ -1,8 +1,11 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CourseSelector } from "@/components/home/CourseSelector";
-import { Sparkles, Zap, Globe } from "lucide-react";
+import { Sparkles, Zap, Users } from "lucide-react";
 import heroImage from "@/assets/hero-background.jpg";
+import instantAccessImg from "@/assets/instant-access.jpg";
+import communityDrivenImg from "@/assets/community-driven.jpg";
+import alwaysUpdatedImg from "@/assets/always-updated.jpg";
 
 const Index = () => {
   return (
@@ -34,8 +37,8 @@ const Index = () => {
                 </h1>
                 
                 <p className="text-base sm:text-lg md:text-xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] max-w-2xl mx-auto px-4 font-medium">
-                  Access past papers, study notes, lecture slides, and recommended books 
-                  all in one beautifully organized platform.
+                  Access past papers, study notes, lecture slides, recommended books, and share knowledge 
+                  with a vibrant student community—all in one beautifully organized platform.
                 </p>
               </div>
             </div>
@@ -58,34 +61,61 @@ const Index = () => {
 
           {/* Features Grid */}
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group">
-              <div className="p-2 sm:p-3 bg-primary/10 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
-                <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+            <div className="bg-white rounded-xl shadow-soft hover-lift border border-gray-100 group overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={instantAccessImg} 
+                  alt="Instant Access" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Instant Access</h3>
-              <p className="text-xs sm:text-sm text-gray-600">
-                Download resources instantly or access external links with a single click.
-              </p>
+              <div className="p-4 sm:p-6">
+                <div className="p-2 sm:p-3 bg-primary/10 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Instant Access</h3>
+                <p className="text-xs sm:text-sm text-gray-600">
+                  Download resources instantly or access external links with a single click.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group">
-              <div className="p-2 sm:p-3 bg-accent/10 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-accent/20 transition-colors">
-                <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+            <div className="bg-white rounded-xl shadow-soft hover-lift border border-gray-100 group overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={communityDrivenImg} 
+                  alt="Community Driven" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Community Driven</h3>
-              <p className="text-xs sm:text-sm text-gray-600">
-                Suggest new resources to help your fellow students succeed.
-              </p>
+              <div className="p-4 sm:p-6">
+                <div className="p-2 sm:p-3 bg-accent/10 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+                </div>
+                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Community Driven</h3>
+                <p className="text-xs sm:text-sm text-gray-600">
+                  Share knowledge, summaries, and insights with fellow students in our vibrant community hub.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-soft hover-lift border border-gray-100 group sm:col-span-2 md:col-span-1">
-              <div className="p-2 sm:p-3 bg-blue-50 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-blue-100 transition-colors">
-                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+            <div className="bg-white rounded-xl shadow-soft hover-lift border border-gray-100 group sm:col-span-2 md:col-span-1 overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={alwaysUpdatedImg} 
+                  alt="Always Updated" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Always Updated</h3>
-              <p className="text-xs sm:text-sm text-gray-600">
-                Fresh resources added regularly to keep you ahead of the curve.
-              </p>
+              <div className="p-4 sm:p-6">
+                <div className="p-2 sm:p-3 bg-blue-50 rounded-lg w-fit mb-3 sm:mb-4 group-hover:bg-blue-100 transition-colors">
+                  <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1 sm:mb-2">Always Updated</h3>
+                <p className="text-xs sm:text-sm text-gray-600">
+                  Fresh resources added regularly to keep you ahead of the curve.
+                </p>
+              </div>
             </div>
           </div>
         </div>
