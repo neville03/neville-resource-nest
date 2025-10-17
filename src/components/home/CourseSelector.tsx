@@ -13,8 +13,8 @@ import {
 const courses = [
   { value: "cs", label: "Computer Science" },
   { value: "se", label: "Software Engineering" },
-  { value: "ist", label: "Information Systems and Technology" },
-  { value: "lis", label: "Library and Information Science" },
+  { value: "bist", label: "Information Systems and Technology" },
+  { value: "blis", label: "Library and Information Science" },
 ];
 
 const years = [
