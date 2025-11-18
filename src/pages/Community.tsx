@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Users, Plus, Calendar } from "lucide-react";
+import { User } from "@supabase/supabase-js";
 
 interface CommunityPost {
   id: string;
@@ -21,14 +23,28 @@ interface CommunityPost {
 
 const Community = () => {
   const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
     fetchPosts();
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const fetchPosts = async () => {
@@ -48,21 +64,27 @@ const Community = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    const { data: { user } } = await supabase.auth.getUser();
-    
+  const handleContribute = () => {
     if (!user) {
       toast({
-        title: "Authentication required",
-        description: "Please log in to contribute to the community",
-        variant: "destructive",
+        title: "Sign in required",
+        description: "Please sign in to contribute to the community",
       });
-      setIsLoading(false);
+      navigate("/auth");
       return;
     }
+    setIsOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+
+    setIsLoading(true);
 
     const { error } = await supabase.from("community_posts").insert({
       title,
@@ -109,7 +131,7 @@ const Community = () => {
 
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2" onClick={handleContribute}>
                   <Plus className="h-5 w-5" />
                   Contribute
                 </Button>
