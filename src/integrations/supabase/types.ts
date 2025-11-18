@@ -74,24 +74,18 @@ export type Database = {
           id: string
           resource_id: string | null
           timestamp: string
-          user_agent: string | null
-          user_ip: string | null
         }
         Insert: {
           event_type: string
           id?: string
           resource_id?: string | null
           timestamp?: string
-          user_agent?: string | null
-          user_ip?: string | null
         }
         Update: {
           event_type?: string
           id?: string
           resource_id?: string | null
           timestamp?: string
-          user_agent?: string | null
-          user_ip?: string | null
         }
         Relationships: [
           {
