@@ -8,6 +8,7 @@ import Resources from "./pages/Resources";
 import Suggest from "./pages/Suggest";
 import About from "./pages/About";
 import Community from "./pages/Community";
+import Auth from "./pages/Auth";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import SetupAdmin from "./pages/SetupAdmin";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/suggest" element={<Suggest />} />
           <Route path="/about" element={<About />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/auth" element={<Auth />} />
           
           {/* Hidden Admin Routes - No visible links to these */}
           <Route path="/admin/login" element={<AdminLogin />} />

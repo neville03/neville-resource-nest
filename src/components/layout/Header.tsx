@@ -1,11 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, MessageSquarePlus, Menu } from "lucide-react";
+import { GraduationCap, MessageSquarePlus, Menu, LogIn, LogOut } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
@@ -29,6 +52,17 @@ export const Header = () => {
               Suggest Resource
             </Button>
           </Link>
+          {user ? (
+            <Button onClick={handleSignOut} variant="outline" size="sm">
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Button>
+          ) : (
+            <Button onClick={() => navigate("/auth")} variant="outline" size="sm">
+              <LogIn className="mr-2 h-4 w-4" />
+              Sign In
+            </Button>
+          )}
         </nav>
 
         {/* Mobile Navigation */}
@@ -56,10 +90,21 @@ export const Header = () => {
               </Link>
               <Link to="/suggest" onClick={() => setOpen(false)}>
                 <Button className="btn-primary flex items-center gap-2 w-full">
-                  <MessageSquarePlus className="w-4 h-4" />
+                  <MessageSquarePlus className="w-4 w-4" />
                   Suggest Resource
                 </Button>
               </Link>
+              {user ? (
+                <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full mt-4">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button onClick={() => navigate("/auth")} variant="outline" size="sm" className="w-full mt-4">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In
+                </Button>
+              )}
             </nav>
           </SheetContent>
         </Sheet>
