@@ -9,6 +9,7 @@ import Suggest from "./pages/Suggest";
 import About from "./pages/About";
 import Community from "./pages/Community";
 import Auth from "./pages/Auth";
+import StudyAssistant from "./pages/StudyAssistant";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import SetupAdmin from "./pages/SetupAdmin";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/community" element={<Community />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/study-assistant" element={<StudyAssistant />} />
           
           {/* Hidden Admin Routes - No visible links to these */}
           <Route path="/admin/login" element={<AdminLogin />} />
