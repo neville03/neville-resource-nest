@@ -19,20 +19,30 @@ serve(async (req) => {
       throw new Error('No authorization header');
     }
 
-    const supabase = createClient(
+    const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      {
+        global: {
+          headers: {
+            Authorization: authHeader,
+          },
+        },
+      }
     );
 
     // Get user
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) {
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    if (userError) {
+      console.error('Auth error:', userError);
       throw new Error('Unauthorized');
+    }
+    if (!user) {
+      throw new Error('No user found');
     }
 
     // Fetch conversation history
-    const { data: messages, error: messagesError } = await supabase
+    const { data: messages, error: messagesError } = await supabaseClient
       .from('chat_messages')
       .select('*')
       .eq('conversation_id', conversationId)
@@ -77,7 +87,7 @@ serve(async (req) => {
     const assistantMessage = aiData.choices[0].message.content;
 
     // Save assistant message
-    const { error: insertError } = await supabase
+    const { error: insertError } = await supabaseClient
       .from('chat_messages')
       .insert({
         conversation_id: conversationId,
